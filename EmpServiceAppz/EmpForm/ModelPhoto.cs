@@ -4,5 +4,6 @@
     {
         public byte[] Photo{ get; set; }
         public long EmployeeId { get; set; }
+
     }
 }
