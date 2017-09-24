@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EmpDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EmployeeTable">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="EmployeeAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="EmployeePhoneNo" Type="bigint" Nullable="false" />
+          <Property Name="EmployeeEmail" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PhotoTable">
+          <Key>
+            <PropertyRef Name="PhotoId" />
+          </Key>
+          <Property Name="PhotoId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="Photo" Type="image" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SalaryTable">
+          <Key>
+            <PropertyRef Name="SalaryId" />
+          </Key>
+          <Property Name="SalaryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="Salary" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_PhotoTable_EmployeeTable">
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="1" />
+          <End Role="PhotoTable" Type="Self.PhotoTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTable">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="PhotoTable">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalaryTable_EmbloyeeTable">
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="1" />
+          <End Role="SalaryTable" Type="Self.SalaryTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTable">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="SalaryTable">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmpDbModelStoreContainer">
+          <EntitySet Name="EmployeeTable" EntityType="Self.EmployeeTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PhotoTable" EntityType="Self.PhotoTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalaryTable" EntityType="Self.SalaryTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PhotoTable_EmployeeTable" Association="Self.FK_PhotoTable_EmployeeTable">
+            <End Role="EmployeeTable" EntitySet="EmployeeTable" />
+            <End Role="PhotoTable" EntitySet="PhotoTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalaryTable_EmbloyeeTable" Association="Self.FK_SalaryTable_EmbloyeeTable">
+            <End Role="EmployeeTable" EntitySet="EmployeeTable" />
+            <End Role="SalaryTable" EntitySet="SalaryTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmpDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EmployeeTable">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmployeeAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmployeePhoneNo" Type="Int64" Nullable="false" />
+          <Property Name="EmployeeEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PhotoTables" Relationship="Self.FK_PhotoTable_EmployeeTable" FromRole="EmployeeTable" ToRole="PhotoTable" />
+          <NavigationProperty Name="SalaryTables" Relationship="Self.FK_SalaryTable_EmbloyeeTable" FromRole="EmployeeTable" ToRole="SalaryTable" />
+        </EntityType>
+        <EntityType Name="PhotoTable">
+          <Key>
+            <PropertyRef Name="PhotoId" />
+          </Key>
+          <Property Name="PhotoId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="EmployeeTable" Relationship="Self.FK_PhotoTable_EmployeeTable" FromRole="PhotoTable" ToRole="EmployeeTable" />
+        </EntityType>
+        <EntityType Name="SalaryTable">
+          <Key>
+            <PropertyRef Name="SalaryId" />
+          </Key>
+          <Property Name="SalaryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="Salary" Type="Double" Nullable="false" />
+          <NavigationProperty Name="EmployeeTable" Relationship="Self.FK_SalaryTable_EmbloyeeTable" FromRole="SalaryTable" ToRole="EmployeeTable" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_PhotoTable_EmployeeTable">
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="1" />
+          <End Role="PhotoTable" Type="Self.PhotoTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTable">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="PhotoTable">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalaryTable_EmbloyeeTable">
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="1" />
+          <End Role="SalaryTable" Type="Self.SalaryTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTable">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="SalaryTable">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmpDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EmployeeTables" EntityType="Self.EmployeeTable" />
+          <EntitySet Name="PhotoTables" EntityType="Self.PhotoTable" />
+          <EntitySet Name="SalaryTables" EntityType="Self.SalaryTable" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_PhotoTable_EmployeeTable" Association="Self.FK_PhotoTable_EmployeeTable">
+            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
+            <End Role="PhotoTable" EntitySet="PhotoTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalaryTable_EmbloyeeTable" Association="Self.FK_SalaryTable_EmbloyeeTable">
+            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
+            <End Role="SalaryTable" EntitySet="SalaryTables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmpDbModelStoreContainer" CdmEntityContainer="EmpDbEntities">
+          <EntitySetMapping Name="EmployeeTables">
+            <EntityTypeMapping TypeName="EmpDbModel.EmployeeTable">
+              <MappingFragment StoreEntitySet="EmployeeTable">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmployeeAddress" ColumnName="EmployeeAddress" />
+                <ScalarProperty Name="EmployeePhoneNo" ColumnName="EmployeePhoneNo" />
+                <ScalarProperty Name="EmployeeEmail" ColumnName="EmployeeEmail" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhotoTables">
+            <EntityTypeMapping TypeName="EmpDbModel.PhotoTable">
+              <MappingFragment StoreEntitySet="PhotoTable">
+                <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalaryTables">
+            <EntityTypeMapping TypeName="EmpDbModel.SalaryTable">
+              <MappingFragment StoreEntitySet="SalaryTable">
+                <ScalarProperty Name="SalaryId" ColumnName="SalaryId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="EmpDbModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
